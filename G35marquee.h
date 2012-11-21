@@ -206,22 +206,22 @@ void G35_textDisplay(String displayText, byte loops = 1, byte fg_ = G35_fg, byte
         Serial.print("]=0x");
         Serial.println(G35_palette[fg_], HEX);
 */
-        switch (displayText[textPos]) {p
+        switch (displayText[textPos]) {
           case 0x70: G35_bg=fg_; G35_fg=bg_; fg_=G35_fg; bg_=G35_bg; break; // p - swap fore/background colors
-          case 0x71: G35_fillDisplay(bg_); break; // q Fill display buffer with background color
-          case 0x72: G35_fillDisplay(fg_); break; // r Fill display buffer with foreground color
-          case 0x73: G35_updateStrands();  break; // s  Force an update (good idea after q or r)
-          case 0x74: delay(250);           break; // t
-          case 0x75: delay(1000);          break; // u
-          case 0x76: delay(4000);          break; // v
+          case 0x71: G35_fillDisplay(bg_); break; // q   Fill display buffer with background color
+          case 0x72: G35_fillDisplay(fg_); break; // r   Fill display buffer with foreground color
+          case 0x73: G35_updateStrands();  break; // s   Force an update (good idea after q or r)
+          case 0x74: delay(250);           break; // t   Pause 1/4 second
+          case 0x75: delay(1000);          break; // u   Pause 1 second
+          case 0x76: delay(4000);          break; // v   Pause 4 seconds
           case 0x77: G35_textDelay=1;      break; // w   Speed: as fast as possible
           case 0x78: G35_textDelay=40;     break; // x   Speed: very fast
           case 0x79: G35_textDelay=70;     break; // y   Speed: fast
           case 0x7A: G35_textDelay=100;    break; // z   Speed: normal
-          case 0x7B: G35_textDelay=130;    break; // {   Speed: slow
-          case 0x7C: G35_textDelay=160;    break; // |   Speed: crawling
-          case 0x7D: G35_runOnce=true;     break; // }   Stop after displaying text once *(test in main loop())
-          case 0x7E: G35_runOnce=false;    break; // ~   Run forever
+          case 0x7C: G35_textDelay=130;    break; // |   Speed: slow
+          case 0x7E: G35_textDelay=160;    break; // ~   Speed: very slow
+          case 0x7D: G35_runOnce=true;     break; // }   Show text only once. *(see test in main loop())
+          case 0x7B: G35_runOnce=false;    break; // {   Run forever
         }
         textPos++;
         continue;
