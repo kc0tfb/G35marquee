@@ -1,12 +1,15 @@
 G35marquee - A serial-connected LED scrolling marquee display for AVR 32u4.
 
-Please see the ACKNOWLEDGEMENTS section.  This project wouldn't exist
-without knowledge gained from others who tread this path before me.
+**** https://github.com/kc0tfb/G35marquee ***
 
-This Arduino-compatible project uses 3 strands of GE-35 ColorEffects
-addressable LEDs as a marquee.  The marquee receives a serial stream from a
-PC or other microcontroller, displaying it on the strands of LEDs attached
-to a Teensy 2.0 (an inexpensive AVR 32u4 dev board from PJRC.com).
+Please see the ACKNOWLEDGEMENTS section.  This project wouldn't exist
+without knowledge gained from the others who tread this path before me.
+
+This Arduino/Teensyduino-compatible project uses 3 strands of GE-35
+ColorEffects addressable LEDs as a marquee.  The marquee receives a USB
+serial stream from a PC or other microcontroller, displaying it on the
+strands of LEDs attached to a Teensy 2.0 (an inexpensive AVR 32u4 dev board
+from PJRC.com).
 
 The LEDs strands (we'll call them A, B and C) are attached to three pins on
 the microcontroller and are laid out in 6 rows, as follows:
@@ -52,33 +55,46 @@ Colors:         Functions:             Special Chars:
 ` Black         p Swap FG/BG color     ^ half-space (2 pixels)
 a Pink          q Fill with BG         [ Left-facing arrow
 b Red           r Fill with FG         ] Right-facing arrow
-c Orange        s Send update          _ Horizonal line (extend arrows)
+c Orange        s Update strands       _ Horizonal line (extends arrows)
 d Peach         t Pause 250 ms
 e Gold          u Pause 1 sec
 f Maroon        v Pause 4 sec
 g Yellow        w No blit delay
-h LemonLime     x 40ms blit delay
-i Green         y 70ms blit delay
-j SeaFoam       x 100ms blit delay
-k Cyan          { 130ms blit delay
-l Blue          | 160ms blit delay
+h LemonLime     x Very fast
+i Green         y Fast scroll
+j SeaFoam       x Normal scroll
+k Cyan          | Slow scroll
+l Blue          ~ Very slow
 m Magenta       } Show 1 cycle
-n Violet        ~ Repeat forever   
+n Violet        { Repeat forever   
 o White
 
-EXAMPLES: (assuming you have your 'duino on /dev/ttyACM0)
+EXAMPLES: (assuming you have your 32u4 on /dev/ttyACM0)
 
-* Show the current time, once.
-
+* Run once, show the current time:
 echo "}qwh`date +%H:%m`" > /dev/ttyACM0
 
-* Show your mail count, once.
+* Loop, Slow, Show all available colors:
+echo '{|aAbBcCdDeEfFgGhHiIjJkKlLmMnNoO  ' > /dev/ttyACM0
 
+* Gold background, Green foreground, then purple foreground:
+echo 'epiGO PACKERS!      nI MEAN VIKINGS!      ' > /dev/ttyACM0
+
+* Set bg back to black, then play with flashing colors:
+echo '`parsbrscrsdrsers' > /dev/ttyACM0
+
+* Show your mail count, once.
 mc=`grep "^From: " $MAIL|wc -l`; echo "}fxqMESSAGES:^$mc" > /dev/ttyACM0
 
-* Flash red/green; clear screen, then say "MERRY XMAS!", fast, looping.
+* Loop, Fast, Flash red/green; clear screen, then say "MERRY XMAS!".
 
-echo '~ybrsuirsubrsuirsuqstMERRY bXMAS!      u' > /dev/ttyACM0
+echo '{ybrsuirsubrsuirsuqstMERRY bXMAS!      u' > /dev/ttyACM0
+
+* Loop, Set red/green as colors, then display alternating colored arrows:
+echo '{bpi' > /dev/ttyACM0; echo '  [_  p' > /dev/ACM0
+
+* Set background to black, clear the screen to the background color:
+echo '`pqs' > /dev/ttyACM0
 
 ACKNOWLEDGEMENTS:
 
@@ -133,12 +149,12 @@ what I needed for the next phase.
 
 I spent an evening annoying my girlfriend by making the display turn lots of
 ugly colors in search of 14 nice ones (plus black and white) to form the
-palette defined in G35_font.h.  She still thinks "peach" is a little off,
+palette defined in G35font.h.  She still thinks "peach" is a little off,
 but oh, well. ;)   You're welcome to comment out the section of
 G35_textDisplay() that handles special effects and replace it with the one
 that allows fine-tuning of colors, left in for this purpose should you wish
 to alter or add to the color palette. Once you're happy with your color
-tweaks, immortalize them in the top section of G35_font.h.
+tweaks, immortalize them in the top section of G35font.h.
 
 Speaking of special effects, within a string, you may: change the foreground
 color, fill the buffer with foreground or background color, swap
