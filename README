@@ -1,11 +1,12 @@
-G35marquee - A serial-connected LED scrolling marquee display.
+G35marquee - A serial-connected LED scrolling marquee display for AVR 32u4.
 
-Please see the ACQNOWLEDGEMENTS section.  This project wouldn't exist
+Please see the ACKNOWLEDGEMENTS section.  This project wouldn't exist
 without knowledge gained from others who tread this path before me.
 
 This Arduino-compatible project uses 3 strands of GE-35 ColorEffects
 addressable LEDs as a marquee.  The marquee receives a serial stream from a
-PC or other microcontroller, displaying it on the attached strands of LEDs.
+PC or other microcontroller, displaying it on the strands of LEDs attached
+to a Teensy 2.0 (an inexpensive AVR 32u4 dev board from PJRC.com).
 
 The LEDs strands (we'll call them A, B and C) are attached to three pins on
 the microcontroller and are laid out in 6 rows, as follows:
@@ -21,6 +22,19 @@ C22 C21 C20 C19 C18 C17 C16 C15 C14 C13 C12
 
 The code to initialize each LED pixel turns them into an [X][Y] matrix used
 to create the scrolling text display.
+
+IMPORTANT NOTE:
+
+When connecting the strands to your microcontroller or dev board, you'll
+need a common ground as well as a data line connection to each strand.  DO
+NOT intermingle the +5V power supply lines, however.  If you're using the
+stock power supplies with these lights, each strand should be kept on its
+own power supply.  Also, do not connect both your computer's USB connection
+and the +5V rail from any other power supply to the microcontroller at the
+same time.  The voltage differential between the power supply and the
+computer will allow current to flow where it shouldn't (from the LED's power
+supply through USB to your computer), potentially damaging the PC,
+microcontroller, power supply or all of the above.
 
 EFFECTS:
 
