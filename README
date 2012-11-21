@@ -1,0 +1,144 @@
+G35marquee - A serial-connected LED scrolling marquee display.
+
+Please see the ACQNOWLEDGEMENTS section.  This project wouldn't exist
+without knowledge gained from others who tread this path before me.
+
+This Arduino-compatible project uses 3 strands of GE-35 ColorEffects
+addressable LEDs as a marquee.  The marquee receives a serial stream from a
+PC or other microcontroller, displaying it on the attached strands of LEDs.
+
+The LEDs strands (we'll call them A, B and C) are attached to three pins on
+the microcontroller and are laid out in 6 rows, as follows:
+
+A01 A02 A03 A04 A05 A06 A07 A08 A09 A10 A11
+A22 A21 A20 A19 A18 A17 A16 A15 A14 A13 A12
+
+B01 B02 B03 B04 B05 B06 B07 B08 B09 B10 B11
+B22 B21 B20 B19 B18 B17 B16 B15 B14 B13 B12
+
+C01 C02 C03 C04 C05 C06 C07 C08 C09 C10 C11
+C22 C21 C20 C19 C18 C17 C16 C15 C14 C13 C12
+
+The code to initialize each LED pixel turns them into an [X][Y] matrix used
+to create the scrolling text display.
+
+EFFECTS:
+
+The display font is all uppercase.  Due to the limitations of a 6-row
+display, lowercase letters are not supported.  I do make use of a-z in the
+input strings however, allowing runtime color changes, delays, speed
+adjustments and a few other tricks.
+
+ASCII codes over 0x60 (lowercase letters) set colors or perform special
+functions.  These can be intermingled with text to display, allowing
+sophisticated displays with just a little typing.
+
+Colors:         Functions:             Special Chars:
+                
+` Black         p Swap FG/BG color     ^ half-space (2 pixels)
+a Pink          q Fill with BG         [ Left-facing arrow
+b Red           r Fill with FG         ] Right-facing arrow
+c Orange        s Send update          _ Horizonal line (extend arrows)
+d Peach         t Pause 250 ms
+e Gold          u Pause 1 sec
+f Maroon        v Pause 4 sec
+g Yellow        w No blit delay
+h LemonLime     x 40ms blit delay
+i Green         y 70ms blit delay
+j SeaFoam       x 100ms blit delay
+k Cyan          { 130ms blit delay
+l Blue          | 160ms blit delay
+m Magenta       } Show 1 cycle
+n Violet        ~ Repeat forever   
+o White
+
+EXAMPLES: (assuming you have your 'duino on /dev/ttyACM0)
+
+* Show the current time, once.
+
+echo "}qwh`date +%H:%m`" > /dev/ttyACM0
+
+* Show your mail count, once.
+
+mc=`grep "^From: " $MAIL|wc -l`; echo "}fxqMESSAGES:^$mc" > /dev/ttyACM0
+
+* Flash red/green; clear screen, then say "MERRY XMAS!", fast, looping.
+
+echo '~ybrsuirsubrsuirsuqstMERRY bXMAS!      u' > /dev/ttyACM0
+
+ACKNOWLEDGEMENTS:
+
+This project would not have been possible without the pioneering work done
+by several others:
+
+DeepDarc for discovering the LED control protocol and providing the original
+implementation of G35 LED third-party control software.
+
+* www.deepdarc.com/2010/11/27/hacking-christmas-lights/
+
+John Riney and Jason Beeland's project provided a starting point for my code
+and gave me ideas for assembling the hardware.  I offer my apologies to
+them, as a lot of Jason's fine work has been irreperably mangled in my
+pursuit of minimized memory footprint.
+
+* https://github.com/riney/g35_arduino_marquee
+
+Sowbug's G35Arduino library provided the data transmission routine.  There
+are a number of other Arduino-compatible G35 LED resources out there, but
+G35Arduino is pretty much the gold standard, in that it offers control of
+multiple strands with individual queues and proper timing management,
+exposing the novice programmer to only minimal complexity. If you want a
+general-purpose G35 strand control library, this is it:
+
+* https://github.com/sowbug/G35Arduino
+
+BACKSTORY:
+
+I wanted to create an AVR-based serial display with three 50-LED strands of
+GE ColorEffects lights.  I tried to use Jason Beeland's code, however I
+didn't want to use a Mega for this and he used structs that couldn't be
+stuffed into much less RAM and still handle 150 pixels.  I really liked the
+double-buffered approach he took to updates, as it made the display
+amazingly fast, so I knew I had to keep that part.
+
+I started by throwing a lot of those big structs out the window.  I divorced
+pixel matrix/address data into its own array since it didn't need to be
+double-buffered like the pixels were.  I further reduced the footprint of
+the pixel address array by stuffing the IO pin data into the top two bits,
+since the G35 protocol only uses 6 bit addresses for bulbs.  I turned to a
+palette-based approach to handle color and intensity, shrinking the output
+and display buffers down to just one byte for each pixel.
+
+All those changes got me code that compiled for the 32u4 (in the form of a
+Teensy 2.0 from PJRC.com), with plenty of room to spare, but I was on a
+roll.  It was time to add features to make the project complete.  Next, I
+moved the font table into flash memory, taking advantage of the additional
+room to add a few more characters and to make it proportional width.  Then I
+added code to accept serial data and put it up on the display.  This gave me
+what I needed for the next phase.
+
+I spent an evening annoying my girlfriend by making the display turn lots of
+ugly colors in search of 14 nice ones (plus black and white) to form the
+palette defined in G35_font.h.  She still thinks "peach" is a little off,
+but oh, well. ;)   You're welcome to comment out the section of
+G35_textDisplay() that handles special effects and replace it with the one
+that allows fine-tuning of colors, left in for this purpose should you wish
+to alter or add to the color palette. Once you're happy with your color
+tweaks, immortalize them in the top section of G35_font.h.
+
+Speaking of special effects, within a string, you may: change the foreground
+color, fill the buffer with foreground or background color, swap
+foreground/background color, change scroll speed, pause the display and
+select loop-forever or run-once mode.  This covers pretty much everything I
+wanted to do with this display.
+
+With all this, there's still plenty of RAM to write your own loop() code to
+read sensors or otherwise obtain information to display.  Feel free to add
+your own contributions.  If you think of nifty effects to add, drop me a
+line and I'll consider adding them to my code.
+
+Thank you and happy hacking!
+
+Peter Gamache, KC0TFB
+
+P.S.  The ampersand glyph is ugly.  Can you do better?  Please share!
