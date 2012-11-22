@@ -7,6 +7,7 @@
 // additional code (the transmit function) from the G35Arduino library
 
 #include <Flash.h> // Font and palette are stored in Flash
+#define TEENSY_UART
 
 // Timing delays for 16Mhz 32u4 (Teensy):
 #define G35_DLONG 17    // should be ~ 20uS long
@@ -18,14 +19,17 @@ const byte G35_matrixWidth = 25;  // The width, in bulbs, of the assembled displ
 const byte G35_matrixHeight = 6;  // The height, in bulbs, of the assembled display.
 const byte G35_strandCount = 3;   // The number if strands used to form the display. Max = 4
 const byte G35_strandLength = 50; // The number of bulbs on each strand.
-const byte G35_strandPin[G35_strandCount] = {2, 3, 4}; // The digital pins assigned to the strands' data buses.
+const byte G35_strandPin[G35_strandCount] = {1, 2, 3}; // The digital pins assigned to the strands' data buses.
 
 #include "G35font.h" // also includes palette
 #include "G35marquee.h" // Gory guts in here
 
-char mymsg[255]="HELLO WORLD."; // global for new things.
+char mymsg[255]="HELLO WORLD."; // global for new messages.
 
 void setup() {
+  pinMode(9, OUTPUT);
+  digitalWrite(9, HIGH);
+  G35_SBEGIN(9600);
   G35_setup();
 }
 
@@ -45,21 +49,21 @@ void setup() {
 */
 
 void serialMessage() {
-    if (Serial.available()) {
+    if (G35_SAVAIL()) {
     byte i=0;
     byte D;
-    while (Serial.available() > 0) {      
-      mymsg[i++]=Serial.read();
+    while (G35_SAVAIL() > 0) {      
+      mymsg[i++]=G35_SREAD();
     }
     mymsg[i]=0;
   }
 }
 
 void loop() {
-  if (Serial.available()) serialMessage();
+  if (G35_SAVAIL()) serialMessage();
   G35_textDisplay(mymsg); // String, Delay, Loops, Text, Background
   if (G35_runOnce == 1) { // sleep until serial data becomes available
-    while (! Serial.available()) delay(10);
+    while (! G35_SAVAIL()) delay(10);
   }
 }
 

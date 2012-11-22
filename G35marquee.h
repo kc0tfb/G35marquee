@@ -1,6 +1,19 @@
 // Global variables and #defines are G35_xxxx
 // Functions are G35_xxxx()
 
+// Serial communication
+
+#ifdef TEENSY_UART // Uart on the teensy
+HardwareSerial Uart = HardwareSerial();
+void G35_SBEGIN(int x) { Uart.begin(x); }
+boolean G35_SAVAIL()   { return(Uart.available()); }
+byte G35_SREAD()       { return(Uart.read()); }
+#else
+void G35_SBEGIN(int x) { Serial.begin(x); }
+boolean G35_SAVAIL()   { return(Serial.available()); }
+byte G35_SREAD()       { return(Serial.read()); }
+#endif
+
 volatile byte G35_fg = 0x0f; // These globals allow
 volatile byte G35_bg = 0x00; // on-the-fly color switching
 volatile int G35_textDelay=80; // inter-frame delay for scrolling text
@@ -174,6 +187,7 @@ void G35_textDisplay(String displayText, byte loops = 1, byte fg_ = G35_fg, byte
     textPos = 0; // index into the string displayed
     charPos = 0; // desired column of character (leftmost = 0)
     while (textPos < textLength) {
+      if (G35_SAVAIL()) { return; }
       if ((displayText[textPos] & 0xF0) == 0x60) { // new FG color for "`a-o"
         fg_ = (displayText[textPos] & 0x0F);
         G35_fg = fg_;
@@ -214,7 +228,7 @@ void G35_textDisplay(String displayText, byte loops = 1, byte fg_ = G35_fg, byte
           case 0x74: delay(250);           break; // t   Pause 1/4 second
           case 0x75: delay(1000);          break; // u   Pause 1 second
           case 0x76: delay(4000);          break; // v   Pause 4 seconds
-          case 0x77: G35_textDelay=1;      break; // w   Speed: as fast as possible
+          case 0x77: G35_textDelay=0;      break; // w   Speed: as fast as possible
           case 0x78: G35_textDelay=40;     break; // x   Speed: very fast
           case 0x79: G35_textDelay=70;     break; // y   Speed: fast
           case 0x7A: G35_textDelay=100;    break; // z   Speed: normal
