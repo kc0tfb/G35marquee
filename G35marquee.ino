@@ -24,16 +24,17 @@ const byte G35_strandPin[G35_strandCount] = {1, 2, 3}; // The digital pins assig
 #include "G35font.h" // also includes palette
 #include "G35marquee.h" // Gory guts in here
 
-char mymsg[255]="HELLO WORLD."; // global for new messages.
-
 void setup() {
-  pinMode(9, OUTPUT);
-  digitalWrite(9, HIGH);
-  G35_SBEGIN(9600);
+  Serial.begin(9600);
+#ifdef TEENSY_UART
+  Uart.begin(9600);
+  digitalWrite(9, HIGH); // needed for APC220 radio module.
+  pinMode(9, OUTPUT);   // Pulled high to enable radio.
+#endif
   G35_setup();
 }
 
-/* void walker(byte color=0x0F) {
+/* void walker(byte color=0x0F) { // Bulb address test
   byte x=0;
   byte y=0;
   while (y < G35_matrixHeight) {
@@ -48,22 +49,16 @@ void setup() {
 };
 */
 
-void serialMessage() {
-    if (G35_SAVAIL()) {
-    byte i=0;
-    byte D;
-    while (G35_SAVAIL() > 0) {      
-      mymsg[i++]=G35_SREAD();
-    }
-    mymsg[i]=0;
+void pollsleep() {
+  while (true) {
+    if (G35_getMessage()) return;
+    delay(1);
   }
 }
 
 void loop() {
-  if (G35_SAVAIL()) serialMessage();
-  G35_textDisplay(mymsg); // String, Delay, Loops, Text, Background
-  if (G35_runOnce == 1) { // sleep until serial data becomes available
-    while (! G35_SAVAIL()) delay(10);
-  }
+  G35_getMessage();
+  G35_textDisplay(G35_msg); // String, Delay, Loops, Text, Background
+  if (G35_runOnce == 1) pollsleep();
 }
 

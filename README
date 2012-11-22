@@ -6,10 +6,19 @@ Please see the ACKNOWLEDGEMENTS section.  This project wouldn't exist
 without knowledge gained from the others who tread this path before me.
 
 This Arduino/Teensyduino-compatible project uses 3 strands of GE-35
-ColorEffects addressable LEDs as a marquee.  The marquee receives a USB
-serial stream from a PC or other microcontroller, displaying it on the
-strands of LEDs attached to a Teensy 2.0 (an inexpensive AVR 32u4 dev board
-from PJRC.com).
+ColorEffects addressable LEDs as a marquee.  The marquee simultaneously
+receives both USB and UART serial streams from a PC or other controller. 
+When a CR or LF is received, it displays the string on the strands of LEDs
+attached to a Teensy 2.0 (an inexpensive AVR 32u4 dev board from PJRC.com).
+
+HARDWARE:
+
+Ingredients:
+* a Teensy 2.0 (PJRC.com)
+* 3 strands of GE G35 ColorEffects LED holiday lights
+* a pair of APC220 data radios (optional for wireless use, 9600N81)
+* (or) a microcontroller that sends TTL serial messages to the 32u4.
+* (or) a PC sending USB serial messages to the 32u4.
 
 The LEDs strands (we'll call them A, B and C) are attached to three pins on
 the microcontroller and are laid out in 6 rows, as follows:
@@ -69,32 +78,33 @@ m Magenta       } Show 1 cycle
 n Violet        { Repeat forever   
 o White
 
-EXAMPLES: (assuming you have your 32u4 on /dev/ttyACM0)
+EXAMPLES: 
+
+Edit the first few lines of the included shell script "sign" to suit.
 
 * Run once, show the current time:
-echo "}qwh`date +%H:%m`" > /dev/ttyACM0
+./sign "}qwh`date +%H:%m`"
 
 * Loop, Slow, Show all available colors:
-echo '{|aAbBcCdDeEfFgGhHiIjJkKlLmMnNoO  ' > /dev/ttyACM0
+./sign '{|aAbBcCdDeEfFgGhHiIjJkKlLmMnNoO  '
 
 * Gold background, Green foreground, then purple foreground:
-echo 'epiGO PACKERS!      nI MEAN VIKINGS!      ' > /dev/ttyACM0
+./sign 'epiGO PACKERS!      nI MEAN VIKINGS!      '
 
 * Set bg back to black, then play with flashing colors:
-echo '`parsbrscrsdrsers' > /dev/ttyACM0
+./sign '`parsbrscrsdrsers'
 
 * Show your mail count, once.
-mc=`grep "^From: " $MAIL|wc -l`; echo "}fxqMESSAGES:^$mc" > /dev/ttyACM0
+mc=`grep "^From: " $MAIL|wc -l`; ./sign "}fxqMESSAGES:^$mc"
 
 * Loop, Fast, Flash red/green; clear screen, then say "MERRY XMAS!".
-
-echo '{ybrsuirsubrsuirsuqstMERRY bXMAS!      u' > /dev/ttyACM0
+./sign '{ybrsuirsubrsuirsuqstMERRY bXMAS!      u'
 
 * Loop, Set red/green as colors, then display alternating colored arrows:
-echo '{bpi' > /dev/ttyACM0; echo '  [_  p' > /dev/ACM0
+./sign '{bpi' > $TEENSY; echo '  [_  p'
 
 * Set background to black, clear the screen to the background color:
-echo '`pqs' > /dev/ttyACM0
+./sign '`pqs'
 
 ACKNOWLEDGEMENTS:
 

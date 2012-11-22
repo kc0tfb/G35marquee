@@ -1,20 +1,7 @@
 // Global variables and #defines are G35_xxxx
 // Functions are G35_xxxx()
 
-// Serial communication
-
-#ifdef TEENSY_UART // Uart on the teensy
-HardwareSerial Uart = HardwareSerial();
-void G35_SBEGIN(int x) { Uart.begin(x); }
-boolean G35_SAVAIL()   { return(Uart.available()); }
-byte G35_SREAD()       { return(Uart.read()); }
-#else
-void G35_SBEGIN(int x) { Serial.begin(x); }
-boolean G35_SAVAIL()   { return(Serial.available()); }
-byte G35_SREAD()       { return(Serial.read()); }
-#endif
-
-volatile byte G35_fg = 0x0f; // These globals allow
+volatile byte G35_fg = 0x0f; // These globals allow persistent
 volatile byte G35_bg = 0x00; // on-the-fly color switching
 volatile int G35_textDelay=80; // inter-frame delay for scrolling text
 volatile boolean G35_runOnce = 0; // 1 means loop forever, 0 means stop.  Must be honored with a test in your main loop();
@@ -23,9 +10,42 @@ byte G35_address[G35_matrixWidth][G35_matrixHeight]; // Addresses of individual 
 volatile byte G35_bulbs[G35_matrixWidth][G35_matrixHeight]; // Output buffer = The display's current value
 volatile byte G35_buffer[G35_matrixWidth][G35_matrixHeight]; // Display buffer = The desired values
 
+char G35_msg[255]="}xaGb3c5dMeAfRgQhUiEjEk.l.m.n.o.       "; // Startup message / color test.
+volatile char G35_newmsg[255]=""; // Buffer for incoming message
+volatile byte G35_newmsgptr=0; // pointer for new msg length
+
 // Macros for dW output
 #define G35_ZERO(x) digitalWrite(x, LOW); delayMicroseconds(G35_DSHORT); digitalWrite(x, HIGH); delayMicroseconds(G35_DLONG);
 #define G35_ONE(x) digitalWrite(x, LOW); delayMicroseconds(G35_DLONG); digitalWrite(x, HIGH); delayMicroseconds(G35_DSHORT);
+
+#ifdef TEENSY_UART // Uart on the teensy
+HardwareSerial Uart = HardwareSerial();
+#endif
+
+boolean G35_readSerial(byte d) {
+  if (((d == 0x0D) | (d == 0x0A)) & (G35_newmsgptr > 0)) { // Carriage Return or Line Feed
+    G35_newmsg[G35_newmsgptr++]=0x00; // null-terminate buffer
+    while (G35_newmsgptr-- != 0) {G35_msg[G35_newmsgptr]=G35_newmsg[G35_newmsgptr];} // copy
+    G35_newmsgptr=0;
+    return(true); // flag for update
+  }
+  if (d < 0x20) return(false); // skip control chars
+  if (d > 0x7E) return(false); // skip unprintables
+  G35_newmsg[G35_newmsgptr++]=d;
+  return(false);
+}
+
+boolean G35_getMessage() {
+  while (Serial.available()) {
+    if (G35_readSerial(Serial.read())) return(true);
+  }
+#ifdef TEENSY_UART // accept messages from the TTL UART as well as USB.
+  while (Uart.available()) {
+    if (G35_readSerial(Uart.read())) return(true);
+  }
+#endif
+  return(false);
+}
 
 // If the character has a font table entry, return the index to it.
 byte G35_fontIndex(char currChar) {
@@ -187,7 +207,7 @@ void G35_textDisplay(String displayText, byte loops = 1, byte fg_ = G35_fg, byte
     textPos = 0; // index into the string displayed
     charPos = 0; // desired column of character (leftmost = 0)
     while (textPos < textLength) {
-      if (G35_SAVAIL()) { return; }
+      if (G35_getMessage()) return; // check for input
       if ((displayText[textPos] & 0xF0) == 0x60) { // new FG color for "`a-o"
         fg_ = (displayText[textPos] & 0x0F);
         G35_fg = fg_;

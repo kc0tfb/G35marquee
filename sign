@@ -1,0 +1,15 @@
+#!/bin/bash
+# Send messages to the G35marquee.
+
+# Comment out if not using an APC220 data radio:
+TEENSY=/dev/ttyUSB0
+stty 9600 < $TEENSY
+
+# Uncomment if using USB:
+#TEENSY=/dev/ttyACM0
+
+# This sends the data and waits a couple seconds prior to closing the file
+# descriptor.  If you simply 'echo "foo" > $TEENSY', the end of the message
+# may get cut off.
+
+( echo "${*}"; sleep 2 ) > $TEENSY
