@@ -14,9 +14,9 @@ attached to a Teensy 2.0 (an inexpensive AVR 32u4 dev board from PJRC.com).
 HARDWARE:
 
 Ingredients:
-* a Teensy 2.0 (PJRC.com)
+* a Teensy 2.0 AVR Mega32u4 dev board (PJRC.com)
 * 3 strands of GE G35 ColorEffects LED holiday lights
-* a pair of APC220 data radios (optional for wireless use, 9600N81)
+* a pair of APC220 data radios (DFrobot.com, configured for 9600N81)
 * (or) a microcontroller that sends TTL serial messages to the 32u4.
 * (or) a PC sending USB serial messages to the 32u4.
 

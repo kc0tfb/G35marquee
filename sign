@@ -8,8 +8,8 @@ stty 9600 < $TEENSY
 # Uncomment if using USB:
 #TEENSY=/dev/ttyACM0
 
-# This sends the data and waits a couple seconds prior to closing the file
+# This sends the data and waits a second prior to closing the file
 # descriptor.  If you simply 'echo "foo" > $TEENSY', the end of the message
 # may get cut off.
 
-( echo "${*}"; sleep 2 ) > $TEENSY
+( echo "${*}"; sleep 1 ) > $TEENSY
