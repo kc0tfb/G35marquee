@@ -1,9 +1,7 @@
 G35marquee - A serial-connected LED scrolling marquee display for AVR 32u4.
 
-**** https://github.com/kc0tfb/G35marquee ***
-
-Please see the ACKNOWLEDGEMENTS section.  This project wouldn't exist
-without knowledge gained from the others who tread this path before me.
+GitHub home: https://github.com/kc0tfb/G35marquee
+Demo video: http://youtu.be/NIbXecUxjb0
 
 This Arduino/Teensyduino-compatible project uses 3 strands of GE-35
 ColorEffects addressable LEDs as a marquee.  The marquee simultaneously
@@ -11,9 +9,11 @@ receives both USB and UART serial streams from a PC or other controller.
 When a CR or LF is received, it displays the string on the strands of LEDs
 attached to a Teensy 2.0 (an inexpensive AVR 32u4 dev board from PJRC.com).
 
+Please see the ACKNOWLEDGEMENTS section.  This project wouldn't exist
+without knowledge gained from the others who tread this path before me.
+
 HARDWARE:
 
-Ingredients:
 * a Teensy 2.0 AVR Mega32u4 dev board (PJRC.com)
 * 3 strands of GE G35 ColorEffects LED holiday lights
 * a pair of APC220 data radios (DFrobot.com, configured for 9600N81)
@@ -41,12 +41,14 @@ When connecting the strands to your microcontroller or dev board, you'll
 need a common ground as well as a data line connection to each strand.  DO
 NOT intermingle the +5V power supply lines, however.  If you're using the
 stock power supplies with these lights, each strand should be kept on its
-own power supply.  Also, do not connect both your computer's USB connection
-and the +5V rail from any other power supply to the microcontroller at the
-same time.  The voltage differential between the power supply and the
-computer will allow current to flow where it shouldn't (from the LED's power
-supply through USB to your computer), potentially damaging the PC,
-microcontroller, power supply or all of the above.
+own power supply.
+
+Also, do not connect both your computer's USB connection and the +5V rail
+from any other power supply to the microcontroller at the same time.  The
+voltage differential between the power supply and the computer will allow
+current to flow where it shouldn't (from the LED's power supply through USB
+to your computer), potentially damaging the PC, microcontroller, power
+supply or all of the above.
 
 EFFECTS:
 
@@ -80,7 +82,8 @@ o White
 
 EXAMPLES: 
 
-Edit the first few lines of the included shell script "sign" to suit.
+Edit the first few lines of the included shell script "sign" to suit, then
+try the following:
 
 * Run once, show the current time:
 ./sign "}qwh`date +%H:%m`"
