@@ -101,7 +101,7 @@ mc=`grep "^From: " $MAIL|wc -l`; ./sign "}fxqMESSAGES:^$mc"
 ./sign '{ybrsuirsubrsuirsuqstMERRY bXMAS!      u'
 
 * Loop, Set red/green as colors, then display alternating colored arrows:
-./sign '{bpi' > $TEENSY; echo '  [_  p'
+./sign '{bpi'; sign '  [_  p'
 
 * Set background to black, clear the screen to the background color:
 ./sign '`pqs'
