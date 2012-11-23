@@ -207,6 +207,7 @@ void G35_textDisplay(String displayText, byte loops = 1, byte fg_ = G35_fg, byte
     textPos = 0; // index into the string displayed
     charPos = 0; // desired column of character (leftmost = 0)
     while (textPos < textLength) {
+//      digitalWrite(LED_PIN, (! digitalRead(LED_PIN))); // heartbeat
       if (G35_getMessage()) return; // check for input
       if ((displayText[textPos] & 0xF0) == 0x60) { // new FG color for "`a-o"
         fg_ = (displayText[textPos] & 0x0F);
