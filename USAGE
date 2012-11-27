@@ -1,0 +1,63 @@
+You can use your own software, an ordinary serial terminal program or the
+included "sign" shell script to send messages to the display. A message
+consists of up to 255 characters, terminated with a carriage return, line
+feed or both.
+
+The display font is all uppercase.  Due to the limitations of a 6-row
+display, lowercase letters are not supported.  I do make use of a-z in the
+input strings however, allowing runtime color changes, delays, speed
+adjustments and a few other tricks.
+
+ASCII codes 0x60-0x7E (mostly lowercase letters) set colors or perform
+special functions when they appear in a message string.  These can be
+intermingled with text to display, allowing sophisticated displays with just
+a little typing.
+
+Colors:         Functions:             Special Chars:
+                
+` Black         p Swap FG/BG color     ^ half-space (2 pixels)
+a Pink          q Fill with BG         [ Left-facing arrow
+b Red           r Fill with FG         ] Right-facing arrow
+c Orange        s Update strands       _ Horizonal line (extends arrows)
+d Peach         t Pause 1 sec
+e Gold          u Pause 4 sec
+f Yellow        v No scroll delay
+g Lime          w Normal scroll speed
+h Green         x Scroll faster
+i Teal          y Scroll slower
+j Cyan          z Cycle FG color; update display
+k Blue          | Increment FG color on each blit
+l Violet        ~ Defaults (black bg, white fg, normal speed,repeat)
+m Purple        } Show 1 cycle
+n Magenta       { Repeat forever   
+o White
+
+EXAMPLES: 
+
+Edit the first few lines of the included shell script "sign" to suit, then
+try the following:
+
+* Run once, show the current time:
+./sign "}qwh`date +%H:%m`"
+
+* Loop, Slow, Show all available colors:
+./sign '{|aAbBcCdDeEfFgGhHiIjJkKlLmMnNoO  '
+
+* Gold background, Green foreground, then purple foreground:
+./sign 'epiGO PACKERS!      nI MEAN VIKINGS!      '
+
+* Set bg back to black, then play with flashing colors:
+./sign '`parsbrscrsdrsers'
+
+* Show your mail count, once.
+mc=`grep "^From: " $MAIL|wc -l`; ./sign "}fxqMESSAGES:^$mc"
+
+* Loop, Fast, Flash red/green; clear screen, then say "MERRY XMAS!".
+./sign '{ybrsuirsubrsuirsuqstMERRY bXMAS!      u'
+
+* Loop, Set red/green as colors, then display alternating colored arrows:
+./sign '{bpi'; sign '  [_  p'
+
+* Set background to black, clear the screen to the background color:
+./sign '`pqs'
+

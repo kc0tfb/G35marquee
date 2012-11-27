@@ -1,22 +1,34 @@
-// palette
-unsigned int G35_palette[] = { // byte to IRGB value - an attempt at ANSI colors
+// palette - split by nybble, MSB to LSB, are Intensity, Red, Green, Blue (0 to F).
+// It should be noted that the factory controller never exceeds "C" intensity and uses "CCCC" for white.
+
+#define PALETTE_IN_FLASH // if defined, we save RAM but cannot adjust colors at runtime
+
+#ifdef PALETTE_IN_FLASH
+FLASH_ARRAY(unsigned int, G35_palette,
+#else
+unsigned int G35_palette[] = {
+#endif
   0x0000, // ` Black
   0xCF22, // a Pink
   0xCF00, // b Red
   0xDF20, // c Orange
   0xDF41, // d Peach
   0xDF40, // e Gold
-  0xCF03, // f Maroon
-  0xCFF0, // g Yellow
-  0xC8F0, // h LemonLime
-  0xC0F0, // i Green
-  0xC0F2, // j Sea Foam
-  0xC0FF, // k Cyan
-  0xC00F, // l Blue
-  0x9F0F, // m Magenta
-  0xC40F, // n Violet
+  0xCFF0, // f Yellow
+  0xC8F0, // g Lime
+  0xC0F0, // h Green
+  0xC0F2, // i Teal
+  0xC0FF, // j Cyan
+  0xC00F, // k Blue
+  0xC40F, // l Violet
+  0x9F0F, // m Purple
+  0xCF03, // n Magenta
   0xCCCC  // o White
-};
+#ifdef PALETTE_IN_FLASH
+); // End FLASH_ARRAY with closed parenthesis.
+#else
+} // end ordinary array with curly brace
+#endif
   
 // ASCII font, 6 rows, proportional width. Last column is width.
 // Lower case (ascii `a-z{|}~) chars switch colors or perform effects; these do not exist in font table

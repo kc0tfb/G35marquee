@@ -8,7 +8,7 @@
 
 #include <Flash.h> // Font and palette are stored in Flash
 #define TEENSY_UART
-#define LED_PIN 11
+// #define LED_PIN 11 // If defined, we toggle the LED during blits as a diagnostic
 
 // Timing delays for 16Mhz 32u4 (Teensy):
 #define G35_DLONG 17    // should be ~ 20uS long
@@ -26,8 +26,10 @@ const byte G35_strandPin[G35_strandCount] = {1, 2, 3}; // The digital pins assig
 #include "G35marquee.h" // Gory guts in here
 
 void setup() {
-//  digitalWrite(LED_PIN, HIGH);
-//  pinMode(LED_PIN, OUTPUT); // Teensy LED
+#ifdef LED_PIN
+  digitalWrite(LED_PIN, HIGH);
+  pinMode(LED_PIN, OUTPUT); // Teensy LED
+#endif
   Serial.begin(9600);
 #ifdef TEENSY_UART
   Uart.begin(9600);

@@ -1,4 +1,6 @@
 G35marquee - A serial-connected LED scrolling marquee display for AVR 32u4.
+Distribute freely and use for any purpose. No warranty expressed or implied.
+(CC-Attribution license)
 
 GitHub home: https://github.com/kc0tfb/G35marquee
 Demo video: http://youtu.be/NIbXecUxjb0
@@ -33,7 +35,7 @@ C01 C02 C03 C04 C05 C06 C07 C08 C09 C10 C11
 C22 C21 C20 C19 C18 C17 C16 C15 C14 C13 C12
 
 The code to initialize each LED pixel turns them into an [X][Y] matrix used
-to create the scrolling text display.
+to create the scrolling text display. See the "USAGE" file for more info.
 
 IMPORTANT NOTE:
 
@@ -49,65 +51,6 @@ voltage differential between the power supply and the computer will allow
 current to flow where it shouldn't (from the LED's power supply through USB
 to your computer), potentially damaging the PC, microcontroller, power
 supply or all of the above.
-
-EFFECTS:
-
-The display font is all uppercase.  Due to the limitations of a 6-row
-display, lowercase letters are not supported.  I do make use of a-z in the
-input strings however, allowing runtime color changes, delays, speed
-adjustments and a few other tricks.
-
-ASCII codes over 0x60 (lowercase letters) set colors or perform special
-functions.  These can be intermingled with text to display, allowing
-sophisticated displays with just a little typing.
-
-Colors:         Functions:             Special Chars:
-                
-` Black         p Swap FG/BG color     ^ half-space (2 pixels)
-a Pink          q Fill with BG         [ Left-facing arrow
-b Red           r Fill with FG         ] Right-facing arrow
-c Orange        s Update strands       _ Horizonal line (extends arrows)
-d Peach         t Pause 250 ms
-e Gold          u Pause 1 sec
-f Maroon        v Pause 4 sec
-g Yellow        w No blit delay
-h LemonLime     x Very fast
-i Green         y Fast scroll
-j SeaFoam       z Normal scroll
-k Cyan          | Slow scroll
-l Blue          ~ Very slow
-m Magenta       } Show 1 cycle
-n Violet        { Repeat forever   
-o White
-
-EXAMPLES: 
-
-Edit the first few lines of the included shell script "sign" to suit, then
-try the following:
-
-* Run once, show the current time:
-./sign "}qwh`date +%H:%m`"
-
-* Loop, Slow, Show all available colors:
-./sign '{|aAbBcCdDeEfFgGhHiIjJkKlLmMnNoO  '
-
-* Gold background, Green foreground, then purple foreground:
-./sign 'epiGO PACKERS!      nI MEAN VIKINGS!      '
-
-* Set bg back to black, then play with flashing colors:
-./sign '`parsbrscrsdrsers'
-
-* Show your mail count, once.
-mc=`grep "^From: " $MAIL|wc -l`; ./sign "}fxqMESSAGES:^$mc"
-
-* Loop, Fast, Flash red/green; clear screen, then say "MERRY XMAS!".
-./sign '{ybrsuirsubrsuirsuqstMERRY bXMAS!      u'
-
-* Loop, Set red/green as colors, then display alternating colored arrows:
-./sign '{bpi'; sign '  [_  p'
-
-* Set background to black, clear the screen to the background color:
-./sign '`pqs'
 
 ACKNOWLEDGEMENTS:
 
