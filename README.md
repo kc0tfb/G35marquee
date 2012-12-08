@@ -1,4 +1,9 @@
-G35marquee - A serial-connected LED scrolling marquee display for AVR 32u4.
+G35marquee
+==========
+
+A serial-connected LED scrolling marquee display for Teensy 2.0 (AVR 32u4).
+---------------------------------------------------------------------------
+
 Distribute freely and use for any purpose. No warranty expressed or implied.
 Full License at: http://creativecommons.org/licenses/by/3.0/
 
@@ -15,6 +20,7 @@ Please see the ACKNOWLEDGEMENTS section.  This project wouldn't exist
 without knowledge gained from the others who tread this path before me.
 
 HARDWARE:
+---------
 
 * a Teensy 2.0 AVR Mega32u4 dev board (PJRC.com)
 * 3 strands of GE G35 ColorEffects LED holiday lights
@@ -38,6 +44,7 @@ The code to initialize each LED pixel turns them into an [X][Y] matrix used
 to create the scrolling text display. See the "USAGE" file for more info.
 
 IMPORTANT NOTE:
+---------------
 
 When connecting the strands to your microcontroller or dev board, you'll
 need a common ground as well as a data line connection to each strand.  DO
@@ -53,6 +60,7 @@ to your computer), potentially damaging the PC, microcontroller, power
 supply or all of the above.
 
 ACKNOWLEDGEMENTS:
+-----------------
 
 This project would not have been possible without the pioneering work done
 by several others:
@@ -60,14 +68,14 @@ by several others:
 DeepDarc for discovering the LED control protocol and providing the original
 implementation of G35 LED third-party control software.
 
-* www.deepdarc.com/2010/11/27/hacking-christmas-lights/
+	www.deepdarc.com/2010/11/27/hacking-christmas-lights/
 
 John Riney and Jason Beeland's project provided a starting point for my code
 and gave me ideas for assembling the hardware.  I offer my apologies to
 them, as a lot of Jason's fine work has been irreperably mangled in my
 pursuit of minimized memory footprint.
 
-* https://github.com/riney/g35_arduino_marquee
+	https://github.com/riney/g35_arduino_marquee
 
 Sowbug's G35Arduino library provided the data transmission routine.  There
 are a number of other Arduino-compatible G35 LED resources out there, but
@@ -76,9 +84,10 @@ multiple strands with individual queues and proper timing management,
 exposing the novice programmer to only minimal complexity. If you want a
 general-purpose G35 strand control library, this is it:
 
-* https://github.com/sowbug/G35Arduino
+	https://github.com/sowbug/G35Arduino
 
 BACKSTORY:
+----------
 
 I wanted to create an AVR-based serial display with three 50-LED strands of
 GE ColorEffects lights.  I tried to use Jason Beeland's code, however I
