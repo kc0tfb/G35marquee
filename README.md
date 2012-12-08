@@ -1,8 +1,8 @@
 G35marquee
 ==========
 
-A serial-connected LED scrolling marquee display for Teensy 2.0 (AVR 32u4).
----------------------------------------------------------------------------
+A scrolling LED marquee serial display for Teensy 2.0 (AVR 32u4).
+-----------------------------------------------------------------
 
 Distribute freely and use for any purpose. No warranty expressed or implied.
 Full License at: http://creativecommons.org/licenses/by/3.0/
@@ -31,14 +31,13 @@ HARDWARE:
 The LEDs strands (we'll call them A, B and C) are attached to three pins on
 the microcontroller and are laid out in 6 rows, as follows:
 
-A01 A02 A03 A04 A05 A06 A07 A08 A09 A10 A11
-A22 A21 A20 A19 A18 A17 A16 A15 A14 A13 A12
+	A01 A02 A03 A04 A05 A06 A07 A08 A09 A10 A11 A12 A13 A14 A15 A16 A17 A18 A19 A20 A21 A22 A13 A24 A25
+	A50 A49 A48 A47 A46 A45 A44 A43 A42 A41 A40 A39 A38 A37 A36 A35 A34 A33 A32 A31 A30 A29 A28 A27 A26
+	B01 B02 B03 B04 B05 B06 B07 B08 B09 B10 B11 B12 B13 B14 B15 B16 B17 B18 B19 B20 B21 B22 B13 B24 B25
+	B50 B49 B48 B47 B46 B45 B44 B43 B42 B41 B40 B39 B38 B37 B36 B35 B34 B33 B32 B31 B30 B29 B28 B27 B26
+	C01 C02 C03 C04 C05 C06 C07 C08 C09 C10 C11 C12 C13 C14 C15 C16 C17 C18 C19 C20 C21 C22 C13 C24 C25
+	C50 C49 C48 C47 C46 C45 C44 C43 C42 C41 C40 C39 C38 C37 C36 C35 C34 C33 C32 C31 C30 C29 C28 C27 C26
 
-B01 B02 B03 B04 B05 B06 B07 B08 B09 B10 B11
-B22 B21 B20 B19 B18 B17 B16 B15 B14 B13 B12
-
-C01 C02 C03 C04 C05 C06 C07 C08 C09 C10 C11
-C22 C21 C20 C19 C18 C17 C16 C15 C14 C13 C12
 
 The code to initialize each LED pixel turns them into an [X][Y] matrix used
 to create the scrolling text display. See the "USAGE" file for more info.
@@ -68,14 +67,14 @@ by several others:
 DeepDarc for discovering the LED control protocol and providing the original
 implementation of G35 LED third-party control software.
 
-	www.deepdarc.com/2010/11/27/hacking-christmas-lights/
+http://www.deepdarc.com/2010/11/27/hacking-christmas-lights/
 
 John Riney and Jason Beeland's project provided a starting point for my code
 and gave me ideas for assembling the hardware.  I offer my apologies to
 them, as a lot of Jason's fine work has been irreperably mangled in my
 pursuit of minimized memory footprint.
 
-	https://github.com/riney/g35_arduino_marquee
+https://github.com/riney/g35_arduino_marquee
 
 Sowbug's G35Arduino library provided the data transmission routine.  There
 are a number of other Arduino-compatible G35 LED resources out there, but
@@ -84,7 +83,7 @@ multiple strands with individual queues and proper timing management,
 exposing the novice programmer to only minimal complexity. If you want a
 general-purpose G35 strand control library, this is it:
 
-	https://github.com/sowbug/G35Arduino
+https://github.com/sowbug/G35Arduino
 
 BACKSTORY:
 ----------
