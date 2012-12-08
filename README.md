@@ -113,12 +113,9 @@ what I needed for the next phase.
 
 I spent an evening annoying my girlfriend by making the display turn lots of
 ugly colors in search of 14 nice ones (plus black and white) to form the
-palette defined in G35font.h.  She still thinks "peach" is a little off,
-but oh, well. ;)   You're welcome to comment out the section of
-G35_textDisplay() that handles special effects and replace it with the one
-that allows fine-tuning of colors, left in for this purpose should you wish
-to alter or add to the color palette. Once you're happy with your color
-tweaks, immortalize them in the top section of G35font.h.
+palette defined in G35font.h.  She still thinks "peach" is a little off, but
+oh, well.  ;) You're welcome to fine-tune colors, see the comments in the
+code for hints.
 
 Speaking of special effects, within a string, you may: change the foreground
 color, fill the buffer with foreground or background color, swap
