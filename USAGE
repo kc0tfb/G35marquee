@@ -63,7 +63,7 @@ mc=`grep "^From: " $MAIL|wc -l`; ./sign "}fxqMESSAGES:^$mc"
 
 NOTE: On most Linux distributions, you need to be part of the 'dialout'
 group to talk to serial devices.  If you get an error message regarding
-/dev/ttyACM0, try: 'sudo usermod -aG dialout USERNAME', where "USERNAME" is
+/dev/whatever, try: 'sudo usermod -aG dialout USERNAME', where "USERNAME" is
 you.  You'll have to logout and back in (or close/re-open a shell window) to
 pick up your new permissions.
 
