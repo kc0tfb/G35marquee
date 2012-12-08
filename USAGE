@@ -19,17 +19,17 @@ Colors:         Functions:             Special Chars:
 a Pink          q Fill with BG         [ Left-facing arrow
 b Red           r Fill with FG         ] Right-facing arrow
 c Orange        s Update strands       _ Horizonal line (extends arrows)
-d Peach         t Pause 1 sec
-e Gold          u Pause 4 sec
-f Yellow        v No scroll delay
-g Lime          w Normal scroll speed
-h Green         x Scroll faster
-i Teal          y Scroll slower
-j Cyan          z Cycle FG color; update display
-k Blue          | Increment FG color on each blit
+d Peach         t Pause 1 second
+e Gold          u Pause 4 seconds
+f Yellow        v Cycle foreground colors
+g Lime          w Scroll as fast as possible
+h Green         x Scroll fast
+i Teal          y Scroll normal
+j Cyan          z Scroll slow (speeds also affect "v" effect)
+k Blue          | Move "cursor" to first column
 l Violet        ~ Defaults (black bg, white fg, normal speed,repeat)
 m Purple        } Show 1 cycle
-n Magenta       { Repeat forever   
+n Magenta       { Repeat forever
 o White
 
 EXAMPLES: 
@@ -60,4 +60,10 @@ mc=`grep "^From: " $MAIL|wc -l`; ./sign "}fxqMESSAGES:^$mc"
 
 * Set background to black, clear the screen to the background color:
 ./sign '`pqs'
+
+NOTE: On most Linux distributions, you need to be part of the 'dialout'
+group to talk to serial devices.  If you get an error message regarding
+/dev/ttyACM0, try: 'sudo usermod -aG dialout USERNAME', where "USERNAME" is
+you.  You'll have to logout and back in (or close/re-open a shell window) to
+pick up your new permissions.
 
