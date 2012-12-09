@@ -14,4 +14,4 @@ stty 9600 < $TEENSY
 # descriptor.  If you simply 'echo "foo" > $TEENSY', the end of the message
 # may get cut off.
 
-( echo "${*}"; sleep 1 ) > $TEENSY
+( echo "${*}"; sleep 2 ) > $TEENSY
