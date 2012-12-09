@@ -32,38 +32,4 @@ m Purple        } Show 1 cycle
 n Magenta       { Repeat forever
 o White
 
-EXAMPLES: 
-
-Edit the first few lines of the included shell script "sign" to suit, then
-try the following:
-
-* Run once, show the current time:
-./sign "}qwh`date +%H:%m`"
-
-* Loop, Slow, Show all available colors:
-./sign '{|aAbBcCdDeEfFgGhHiIjJkKlLmMnNoO  '
-
-* Gold background, Green foreground, then purple foreground:
-./sign 'epiGO PACKERS!      nI MEAN VIKINGS!      '
-
-* Set bg back to black, then play with flashing colors:
-./sign '`parsbrscrsdrsers'
-
-* Show your mail count, once.
-mc=`grep "^From: " $MAIL|wc -l`; ./sign "}fxqMESSAGES:^$mc"
-
-* Loop, Fast, Flash red/green; clear screen, then say "MERRY XMAS!".
-./sign '{ybrsuirsubrsuirsuqstMERRY bXMAS!      u'
-
-* Loop, Set red/green as colors, then display alternating colored arrows:
-./sign '{bpi'; sign '  [_  p'
-
-* Set background to black, clear the screen to the background color:
-./sign '`pqs'
-
-NOTE: On most Linux distributions, you need to be part of the 'dialout'
-group to talk to serial devices.  If you get an error message regarding
-/dev/whatever, try: 'sudo usermod -aG dialout USERNAME', where "USERNAME" is
-you.  You'll have to logout and back in (or close/re-open a shell window) to
-pick up your new permissions.
-
+For examples, see the EXAMPLES file. 

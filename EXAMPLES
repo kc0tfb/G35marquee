@@ -1,0 +1,64 @@
+# NOTE: On most Linux distributions, you need to be part of the 'dialout'
+# group to talk to serial devices.  If you get an error message regarding
+# /dev/whatever, try: 'sudo usermod -aG dialout USERNAME', where "USERNAME" is
+# you.  You'll have to logout and back in (or close/re-open a shell window)
+# to pick up your new permissions.
+
+# Edit the first few lines of the included shell script "sign" to suit your
+# serial device (whether it's a serial port, ttyUSBx, etc), then try the
+# following:
+
+# Run once, show the current time:
+./sign "~}qwh`date +%H:%m`"
+
+# Loop, Slow, Show all available colors:
+./sign '~zaAbBcCdDeEfFgGhHiIjJkKlLmMnNoO  '
+
+# Set bg back to black, then play with flashing colors:
+./sign '`parsbrscrsdrsers'
+
+# Show your mail count, once.
+mc=`grep "^From: " $MAIL|wc -l`
+./sign "}fxqMESSAGES:^$mc"
+
+# Loop and set red/green as colors, then display alternating colored arrows:
+./sign '{bph'; ./sign '  [_  p'
+
+# cycle all lights through all colors
+sign '~rsv'
+
+# More advanced examples:
+
+# Traffic sign envy?
+sign '~weqst|^[ ]^t' # Go around
+sign '~werst|^[ ]^t' # Go around, hi-intensity version
+sign '~weq|CRASHtq|AHEADtqst|MERGEtqs|^LEFTtqst'
+
+# Holiday stuff:
+sign '~x|bp     hp     ' # Christmas Cylon
+sign '~x|bph p p p p p ' # Christmas Shuffle
+sign '~hHAPPYv bHOLIDAYS!     p     |hp     |' # Message w/ wipe transition
+
+# Juggling colored dots
+sign '~a:b:c:d:e:f:g:h:i:j:k:l:v|     |'
+
+# colored spaces
+sign '~|ap bp cp dp ep |fp hp ip jp kp |lp mp np op `p ' # Overwriting
+sign '~ap bp cp dp ep fp hp ip jp kp lp mp np op `p ' # Scrolling
+
+# Is it parade time?
+sign '~qw|bPfRhIkDmExvt'
+sign '~kqHAPPY bJULY o4TH!     w| .  .t| !  !t|^^* *t'
+
+# Halloween sleepy sign. "uuuu" gives a 16 second pause.
+sign '~wcrsqsrsqsrsqsrsqsrsrsqs|^^BOO!^^tyvqsuuuu' # Scary!
+
+# For the football fans:
+sign '~xq|l ^GO|     |VIKES|eVIKES|lVIKESt'
+
+# Promoting GPS movie night:
+sign '~xqkGEEK PARTNERSHIP.ORG     wi|^FREEtq|hMOVIEtq|lNIGHTtx|     j7^PM tfROOM o135 u'
+
+# Done playing but don't want to unplug the sign?
+sign '~qs}' # turn LEDs off (minimize power usage)
+
