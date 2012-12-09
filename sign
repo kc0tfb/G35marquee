@@ -1,8 +1,10 @@
 #!/bin/bash
 # Send messages to the G35marquee.
 
-# Comment out if not using an APC220 data radio:
+# The device name for the Teensy that drives the sign:
 TEENSY=/dev/ttyUSB0
+
+# Comment out if not using an APC220 data radio:
 stty 9600 < $TEENSY
 
 # Uncomment if using USB:
